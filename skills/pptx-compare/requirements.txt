@@ -1,0 +1,11 @@
+# Runtime dependencies for the skill.
+#
+# This is what run.sh / run.ps1 install into the skill's own venv, and the only
+# dependency file that travels with the skill when the directory is copied into
+# ~/.claude/skills/. Keep it in sync with [project].dependencies in the
+# repository-root pyproject.toml by hand; nothing checks this automatically.
+#
+# Keep this file pure ASCII. pip decodes requirements files using the system
+# locale encoding, so a non-ASCII character here raises UnicodeDecodeError on
+# machines whose locale is not UTF-8 (for example cp932 on Japanese Windows).
+lxml==5.3.0

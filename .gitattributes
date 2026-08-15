@@ -1,0 +1,15 @@
+# Normalize line endings to LF inside the repository, regardless of the
+# platform a contributor commits from.
+* text=auto
+
+# Shell scripts must be LF in the *working tree* as well, not just in the
+# repository. The skill is installed by copying skills/pptx-compare/ straight
+# into ~/.claude/skills/, so run.sh is executed exactly as it appears here —
+# a CRLF shebang written on Windows fails on Linux/macOS with
+# "bad interpreter: /usr/bin/env bash^M".
+*.sh text eol=lf
+
+# Office documents are binary — never convert.
+*.pptx binary
+*.xlsx binary
+*.docx binary
