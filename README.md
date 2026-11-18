@@ -1,4 +1,4 @@
-# slidepack-skills
+# pptx-skills/pptx-compare
 
 A [Claude Skill](https://code.claude.com/docs/en/skills) for diffing PowerPoint (`.pptx`) files
 at the OOXML level.
