@@ -10,18 +10,6 @@ in that noise, while a text-extraction diff misses formatting changes entirely.
 This skill normalizes away the noise, maps slide pairs by similarity
 (so reordering, insertion and deletion are handled), and reports what changed.
 
-## Two strategies
-
-| | `slide-compare-lite` | `slide-compare` |
-| --- | --- | --- |
-| Purpose | *What* changed | *How* it changed, at the XML level |
-| Normalization | Strong (removes PowerPoint save-noise) | Minimal (attribute sort / whitespace only) |
-| Output | File metadata, summary, unified diff | Node-based diff, or raw before/after for small XML |
-| Speed | Faster — CRC32 pre-matching skips unchanged parts | Slower — every part is read four times and diffed |
-
-Start with `lite` to find out *whether* something changed, then run the full pass on the decks
-that did. Slide masters, layouts and themes are compared as well as the slides themselves.
-
 ## Install
 
 Recommended:
@@ -49,6 +37,19 @@ PowerPoint itself is not required.
 Ask Claude to compare two decks:
 
 > Compare before.pptx and after.pptx
+
+Two strategies are available:
+
+| | `slide-compare-lite` | `slide-compare` |
+| --- | --- | --- |
+| Purpose | **Which** slides changed | **What** changed on each slide |
+| Normalization | Strong (removes PowerPoint save noise) | Minimal (attribute sort / whitespace only) |
+| Speed | Fast (less tokens) | Slow (more tokens) |
+
+Start with `lite` to find out *whether* something changed, then run the full pass if they did.
+
+Slide masters, layouts and themes are compared as well as the slides themselves.
+
 
 ## Standalone script usage
 
