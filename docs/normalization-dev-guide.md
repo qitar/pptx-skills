@@ -162,6 +162,7 @@ you hit something similar.
 | `<c:lblAlgn>`, `<c:noMultiLvlLbl>` | Axis-label settings PowerPoint adds | Remove the whole element |
 | `<a:rPr lang="ja-JP" altLang="en-US">` | Language attributes PowerPoint adds on save | Drop `lang` / `altLang` |
 | `<a:fld type="slidenum"><a:t>N</a:t>` | PowerPoint precomputes and stores the page number | Clear the `<a:t>` text |
+| `<a:fld type="datetime*"><a:t>…</a:t>` | PowerPoint stores the date/time of the save as the field text | Clear the `<a:t>` text |
 | `<a:tc hMerge="1">` | Merged-cell attribute PowerPoint drops | Drop the `hMerge` attribute |
 | `<c:autoUpdate>` in `<c:externalData>` | External-data auto-refresh flag | Remove the whole element |
 | `<c:lang>` | Locale-dependent language tag | Remove the whole element |

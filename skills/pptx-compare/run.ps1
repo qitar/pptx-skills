@@ -65,25 +65,30 @@ function Find-Python {
     return $null
 }
 
-if (-not (Test-Path $Venv)) {
+function Find-VenvPython {
+    # Windows layout first, POSIX layout for PowerShell on Linux/macOS.
+    foreach ($rel in @('Scripts/python.exe', 'bin/python')) {
+        $path = Join-Path $Venv $rel
+        if (Test-Path $path) { return $path }
+    }
+    return $null
+}
+
+$VenvPython = Find-VenvPython
+if ($null -eq $VenvPython) {
     $python = Find-Python
     if ($null -eq $python) {
         Write-Error 'Python >= 3.10 is required but was not found on PATH.'
         exit 1
     }
-    & $python.Cmd @($python.Args + @('-m', 'venv', $Venv))
+    & $python.Cmd @($python.Args + @('-m', 'venv', '--clear', $Venv))
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Failed to create a virtualenv at $Venv"
         exit 1
     }
+    $VenvPython = Find-VenvPython
 }
-
-# Windows layout first, POSIX layout for PowerShell on Linux/macOS.
-$VenvPython = Join-Path $Venv 'Scripts/python.exe'
-if (-not (Test-Path $VenvPython)) {
-    $VenvPython = Join-Path $Venv 'bin/python'
-}
-if (-not (Test-Path $VenvPython)) {
+if ($null -eq $VenvPython) {
     Write-Error "Could not locate the virtualenv interpreter under $Venv"
     exit 1
 }

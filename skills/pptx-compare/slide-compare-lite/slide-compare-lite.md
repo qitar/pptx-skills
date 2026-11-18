@@ -55,7 +55,7 @@ CRC32チェックサムによる事前フィルタリングで未変更ファイ
       "after_index": 1,
       "status": "modified",
       "similarity": 0.0,
-      "diff_file": "<diff_dir>/masters/master_B1_A1.diff",
+      "diff_file": "<diff_dir>/masters/slide_B1_A1.diff",
       "before_checksum": "0x1a2b3c4d",
       "after_checksum": "0x5e6f7a8b"
     }
@@ -117,14 +117,7 @@ CRC32チェックサムによる事前フィルタリングで未変更ファイ
 
 1. `summary` と `master_summary` で変更の有無を確認する
 2. `before_meta` / `after_meta` でファイルサイズ・スライド枚数の変化を確認する
-3. **変更がある場合slide-compareを実行し詳細を確認することを進める**
-
-```bash
-<SKILL_DIR>/run.sh full before.pptx after.pptx
-# Windows PowerShell: <SKILL_DIR>\run.ps1 full before.pptx after.pptx
-```
-
-4. 変更がない場合（すべて `identical` または `added`/`deleted` のみ）は以下を報告する:
+3. 下記のフォーマットで報告する
 
 ---
 

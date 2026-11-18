@@ -19,20 +19,20 @@ find_python() {
   return 1
 }
 
-if [[ ! -d "$VENV" ]]; then
-  PYTHON_CMD=$(find_python) || {
-    echo "Error: Python >= 3.10 is required but not found" >&2
-    exit 1
-  }
-  "$PYTHON_CMD" -m venv "$VENV"
-fi
-
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
   PIP="$VENV/Scripts/pip"
   PYTHON="$VENV/Scripts/python"
 else
   PIP="$VENV/bin/pip"
   PYTHON="$VENV/bin/python"
+fi
+
+if [[ ! -x "$PYTHON" ]]; then
+  PYTHON_CMD=$(find_python) || {
+    echo "Error: Python >= 3.10 is required but not found" >&2
+    exit 1
+  }
+  "$PYTHON_CMD" -m venv --clear "$VENV"
 fi
 
 "$PIP" install -r "$HERE/requirements.txt" -q

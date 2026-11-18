@@ -238,13 +238,15 @@ def _merge_paragraph_runs(root: etree._Element) -> None:
             p_el.remove(first_r)
 
 
-def _clear_slidenum_fields(root: etree._Element) -> None:
-    """Step 12: Clear <a:t> content inside <a:fld type="slidenum"> fields.
+def _clear_auto_updating_fields(root: etree._Element) -> None:
+    """Step 12: Clear <a:t> content inside slide-number and date/time <a:fld> fields.
 
-    PowerPoint pre-calculates slide numbers; these change between file versions.
+    PowerPoint stores the computed slide number and the date/time of the save as
+    the field text, so it changes between file versions.
     """
     for fld in root.findall(f".//{_A_FLD_TAG}"):
-        if fld.get("type") == "slidenum":
+        fld_type = fld.get("type", "")
+        if fld_type == "slidenum" or fld_type.startswith("datetime"):
             for t_el in fld.findall(f".//{_A_T_TAG}"):
                 t_el.text = ""
 
@@ -383,7 +385,7 @@ _NORMALIZE_RULES = (
     _remove_auto_update,              # Step 9
     _fix_gridspan,                    # Step 10
     _merge_paragraph_runs,            # Step 11
-    _clear_slidenum_fields,           # Step 12
+    _clear_auto_updating_fields,      # Step 12
     _strip_rpr_lang,                  # Step 13
     _remove_invisible_table_borders,  # Step 14
     _strip_tc_hmerge,                 # Step 15

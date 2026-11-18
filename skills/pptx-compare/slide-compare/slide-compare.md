@@ -91,7 +91,7 @@ Claude が直接読んで差分を把握する。
       "before_index": 1,
       "after_index": 1,
       "status": "modified",
-      "diff_file": "<diff_dir>/masters/master_B1_A1.diff"
+      "diff_file": "<diff_dir>/masters/slide_B1_A1.diff"
     }
   ],
   "diff_dir": "<一時ディレクトリ>/pptx_full_compare_xxxxxxxx"
@@ -101,16 +101,17 @@ Claude が直接読んで差分を把握する。
 ## 実行後アクション
 
 1. `mapping` と `master_mapping` で変更対象ファイルを把握する
-2. スライドのdiff一括読み込み:
+2. スライドの出力ファイル一括読み込み:
    ```bash
-   cat "$DIFF_DIR"/*.diff
+   cat "$DIFF_DIR"/slide_*
    ```
-3. マスター・レイアウト・テーマのdiff一括読み込み:
+3. マスター・レイアウト・テーマの出力ファイル一括読み込み:
    ```bash
-   cat "$DIFF_DIR/masters"/*.diff
+   cat "$DIFF_DIR/masters"/slide_*
    ```
    `$DIFF_DIR` は出力 JSON の `diff_dir` の値。個別に読むのは禁止。
-   PowerShell の場合は `Get-Content "$DIFF_DIR\*.diff"` を使う。
+   PowerShell の場合は `Get-Content "$DIFF_DIR\slide_*"` を使う。
+   出力ファイルには `.diff` と `_direct.txt`（上記「小さいXMLの場合」）の2種類があり、どちらも読む必要がある。
 4. **下記「レポートフォーマット」に従って**変更を日本語で解説する
 
 ## lite との違い
