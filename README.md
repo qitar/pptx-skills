@@ -24,42 +24,31 @@ that did. Slide masters, layouts and themes are compared as well as the slides t
 
 ## Install
 
-A skill is just a directory containing `SKILL.md`, so installing it is a copy. Use it across all
-your projects:
+Recommended:
 
-```bash
-cp -r skills/pptx-compare ~/.claude/skills/
+```
+npx skills add github.com/qitar/pptx-skills
 ```
 
-…or scope it to one repository:
+Manual: Clone this repo, then
 
-```bash
-cp -r skills/pptx-compare /path/to/your/project/.claude/skills/
+```
+ln -s skills/pptx-compare ~/.agents/skills
 ```
 
-A symlink works too, if you would rather track this repository:
+## Requirements
 
-```bash
-ln -s "$(pwd)/skills/pptx-compare" ~/.claude/skills/pptx-compare
-```
+**Python >= 3.10** in your path.
 
-If you have already run the skill from this checkout, exclude the venv it created so you copy
-sources rather than a machine-specific build artifact:
+Script dependencies get installed to a venv within the skill directory on first run.
 
-```bash
-rsync -a --exclude .venv skills/pptx-compare ~/.claude/skills/
-```
+PowerPoint itself is not required.
 
 ## Skill usage
 
 Ask Claude to compare two decks:
 
 > Compare before.pptx and after.pptx
-
-> **Uploading to claude.ai instead?** That path — the Skills API, Cowork and cloud sessions —
-> takes a zipped skill rather than a directory. Use the official
-> [`package_skill.py`](https://github.com/anthropics/skills) to build it; this repository
-> deliberately ships no packaging script of its own.
 
 ## Standalone script usage
 
@@ -84,16 +73,6 @@ status, plus paths to the generated diff files.
 | --- | --- | --- |
 | `--threshold` | `0.5` | Minimum Jaccard similarity to treat two slides as the same when mapping pairs |
 | `--output-dir DIR` | temp dir | Where diff files are written |
-
-## Requirements
-
-- **Python >= 3.10** — the only hard requirement. `run.sh` / `run.ps1` find a suitable interpreter
-  and bootstrap the venv themselves.
-- **[lxml](https://lxml.de/)** — installed automatically into that venv on first run. This first
-  run needs network access to reach PyPI; every comparison afterwards is fully offline.
-
-PowerPoint itself is *not* required, and neither is LibreOffice — the skill reads the `.pptx` zip
-container directly.
 
 ## Repository layout
 
