@@ -55,7 +55,7 @@ CRC32チェックサムによる事前フィルタリングで未変更ファイ
       "after_index": 1,
       "status": "modified",
       "similarity": 0.0,
-      "diff_file": "<diff_dir>/masters/master_B1_A1.diff",
+      "diff_file": "<diff_dir>/masters/slide_B1_A1.diff",
       "before_checksum": "0x1a2b3c4d",
       "after_checksum": "0x5e6f7a8b"
     }
