@@ -3,14 +3,12 @@
 A [Claude Skill](https://code.claude.com/docs/en/skills) for diffing PowerPoint (`.pptx`) files
 at the OOXML level.
 
-Comparing two decks is harder than it looks: PowerPoint rewrites parts of the XML every time a
-file is opened and saved — language attributes, chart formatting hints, invisible table borders,
-float notation, text-run splits — none of which the user actually changed. A naive XML diff drowns
+Comparing two pptx decks is not straightforward: PowerPoint rewrites parts of the XML every time a
+file is saved, regardless of intentional user edits. A naive XML diff drowns
 in that noise, while a text-extraction diff misses formatting changes entirely.
 
-This skill normalizes the PowerPoint-generated noise away, maps slides between the two files by
-Jaccard similarity (so reordering, insertion and deletion are handled), and reports what changed
-in textboxes, tables, charts and speaker notes.
+This skill normalizes away the noise, maps slide pairs by similarity
+(so reordering, insertion and deletion are handled), and reports what changed.
 
 ## Two strategies
 
@@ -52,19 +50,20 @@ sources rather than a machine-specific build artifact:
 rsync -a --exclude .venv skills/pptx-compare ~/.claude/skills/
 ```
 
-Then just ask Claude to compare two decks:
+## Skill usage
 
-> before.pptx と after.pptx の差分を教えて
+Ask Claude to compare two decks:
+
+> Compare before.pptx and after.pptx
 
 > **Uploading to claude.ai instead?** That path — the Skills API, Cowork and cloud sessions —
 > takes a zipped skill rather than a directory. Use the official
 > [`package_skill.py`](https://github.com/anthropics/skills) to build it; this repository
 > deliberately ships no packaging script of its own.
 
-## Standalone usage
+## Standalone script usage
 
-The skill is a plain Python program and runs fine without Claude. The launcher creates its own
-venv next to the skill and installs dependencies on first run.
+The skill comes with a plain Python program that you can run without Claude.
 
 ```bash
 # macOS / Linux / Git Bash
@@ -83,7 +82,7 @@ status, plus paths to the generated diff files.
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `--threshold` | `0.5` | Minimum Jaccard similarity to treat two slides as the same slide |
+| `--threshold` | `0.5` | Minimum Jaccard similarity to treat two slides as the same when mapping pairs |
 | `--output-dir DIR` | temp dir | Where diff files are written |
 
 ## Requirements
@@ -99,9 +98,9 @@ container directly.
 ## Repository layout
 
 ```
-skills/pptx-compare/          the skill itself (this is what you install)
-├── SKILL.md                  entry point: strategy selection
-├── run.sh / run.ps1          venv bootstrap + dispatch (POSIX / Windows)
+skills/pptx-compare/             the skill itself
+├── SKILL.md                  point: strategy selection
+├── run.sh / run.ps1          venv bootstrap + dispatch
 ├── core/                     extractor / normalizer / mapper / differ
 ├── slide-compare/            full-detail strategy
 └── slide-compare-lite/       fast overview strategy
@@ -110,25 +109,13 @@ docs/normalization-dev-guide.md   how to add a normalization rule
 AGENTS.md                         orientation for AI coding agents
 ```
 
-The `skills/<name>/SKILL.md` layout is the conventional one, so skill installers that read a git
-repository directly — such as [`skills`](https://github.com/vercel-labs/skills) — pick this up
-without any extra configuration.
-
 The normalizer is where most of the domain knowledge lives. If you find a PowerPoint artifact that
 still shows up as a false positive, `docs/normalization-dev-guide.md` walks through diagnosing it
 and adding a rule.
 
 ## Note on language
 
-The split is deliberate: **prompts are Japanese, everything else is English.**
-
-`SKILL.md` and the two strategy documents are prompts — Claude reads them — and they are written
-in Japanese, which is why Claude reports its findings in Japanese by default. Everything a person
-reads (this README, `AGENTS.md`, `docs/`, all code and comments) is English, as are the JSON
-output and the diff files.
-
-To get reports in another language, translate those three prompt files; nothing else needs to
-change.
+Prompts were written in Japanese because our dev team consists of Japanese people. This shouldn't affect usage in other languages.
 
 ## Contributing
 
@@ -138,8 +125,6 @@ Bug reports and feature requests are welcome via GitHub issues.
 
 ## License
 
-Apache License 2.0. [LICENSE](LICENSE) holds the license text verbatim; [NOTICE](NOTICE) holds
-the copyright attribution, which redistributions must carry along under section 4(d).
+Apache License 2.0 ([LICENSE](LICENSE)).
 
-`lxml` is installed at runtime into the skill's own venv rather than bundled here, so it is not
-redistributed by this project and carries its own license where it is installed.
+[NOTICE](NOTICE) holds the copyright attribution. Please include that file when redistributing.
