@@ -132,7 +132,8 @@ change.
 
 ## Contributing
 
-See [AGENTS.md](AGENTS.md) for the development setup, the lint command, and a map of the codebase.
+See [DEVELOPMENT.md](DEVELOPMENT.md) for the development setup, the lint command, and a map of the codebase.
+
 Bug reports and feature requests are welcome via GitHub issues.
 
 ## License
